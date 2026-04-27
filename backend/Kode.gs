@@ -4,14 +4,20 @@
 
 // GANTI DENGAN ID GOOGLE SHEET ANDA
 // (Ambil string acak di URL Sheet antara /d/ dan /edit)
-var SPREADSHEET_ID = "GANTI_ID_SPREADSHEET"; 
+var SPREADSHEET_ID = "1343kgBhVzWoOdHJVCj1Xaz8oLGPr8Uv5rtwtXmDRDUo"; 
 
 // GANTI DENGAN FOLDER ID FOTO DRIVE ANDA
-var FOLDER_ID = "GANTI_ID_FOLDER_DRIVE";
+var FOLDER_ID = "1jkG-cy3Dv7Zto1THWr81ILkjVGWTeXEt";
 
 function doOptions(e) {
+  var headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type"
+  };
   return ContentService.createTextOutput("")
-    .setMimeType(ContentService.MimeType.TEXT);
+    .setMimeType(ContentService.MimeType.TEXT)
+    .setHeaders(headers);
 }
 
 function doGet(e) {
@@ -126,8 +132,14 @@ function doPost(e) {
 // === Helper Functions ===
 
 function buildResponse(obj) {
+  var headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type"
+  };
   return ContentService.createTextOutput(JSON.stringify(obj))
-    .setMimeType(ContentService.MimeType.JSON);
+    .setMimeType(ContentService.MimeType.JSON)
+    .setHeaders(headers);
 }
 
 function getSheetDataAsJson(sheet) {
