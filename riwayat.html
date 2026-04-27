@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riwayat Laporan — Monitoring Sensus Ekonomi BPS 2026</title>
+  <meta name="description" content="Riwayat laporan kegiatan Sensus Ekonomi BPS 2026.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Riwayat detail Modal ── */
+    .rw-modal-backdrop {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(15,24,42,0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .rw-modal-backdrop.open { display: flex; }
+
+    .rw-modal {
+      background: linear-gradient(180deg,#FFFFFF 0%,#FAFBFD 100%);
+      border-radius: 20px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.9);
+      width: 100%; max-width: 900px;
+      max-height: 88vh; overflow: hidden;
+      display: flex; flex-direction: column;
+      animation: modalIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes modalIn {
+      from { opacity:0; transform: scale(0.93) translateY(16px); }
+      to   { opacity:1; transform: scale(1)    translateY(0); }
+    }
+
+    /* Modal header */
+    .rw-modal-head {
+      padding: 20px 28px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 16px;
+      flex-shrink: 0;
+    }
+    .rw-modal-head-info { flex: 1; }
+    .rw-modal-periode {
+      font-size: 18px; font-weight: 800; color: var(--text); line-height: 1.2;
+    }
+    .rw-modal-meta {
+      font-size: 13px; color: var(--text-muted); margin-top: 4px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .rw-modal-close {
+      width: 36px; height: 36px; border-radius: 50%; border: none;
+      background: var(--surface); color: var(--text-muted);
+      font-size: 18px; cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .rw-modal-close:hover { background: #fee2e2; color: #dc2626; }
+
+    /* Modal body: 3 columns */
+    .rw-modal-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .rw-col {
+      padding: 24px 24px 28px;
+      min-height: 0;
+    }
+    .rw-col + .rw-col {
+      border-left: 1px solid var(--border);
+    }
+    .rw-col-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+      text-transform: uppercase; margin-bottom: 14px;
+      padding-bottom: 10px; border-bottom: 2px solid;
+    }
+    .rw-col-label.kegiatan { color: var(--primary); border-color: var(--primary); }
+    .rw-col-label.rencana  { color: #10B981;         border-color: #10B981; }
+    .rw-col-label.foto     { color: #8B5CF6;         border-color: #8B5CF6; }
+
+    .rw-col-text {
+      font-size: 14px; line-height: 1.75; color: var(--text);
+      white-space: pre-line;
+    }
+    .rw-col-empty {
+      font-size: 13px; color: var(--text-light); font-style: italic;
+    }
+
+    /* Photo grid in the 3rd column */
+    .rw-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 10px;
+    }
+    .rw-photo-item { display: flex; flex-direction: column; gap: 5px; }
+    .rw-photo-item img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      border-radius: 8px; border: 1px solid var(--border);
+      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .rw-photo-item img:hover { transform: scale(1.04); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+    .rw-photo-caption {
+      font-size: 11px; color: var(--text-muted); text-align: center; line-height: 1.3;
+    }
+
+    /* Modal footer */
+    .rw-modal-foot {
+      padding: 14px 28px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0; background: var(--surface);
+      border-radius: 0 0 20px 20px;
+    }
+    .rw-modal-foot-meta { font-size: 12px; color: var(--text-muted); }
+
+    @media (max-width: 700px) {
+      .rw-modal-body { grid-template-columns: 1fr; }
+      .rw-col + .rw-col { border-left: none; border-top: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="laporan.html" class="navbar-brand">
+      <div class="navbar-logo"><span>BPS</span><small>SE</small></div>
+      <div class="navbar-brand-text">
+        <span class="navbar-brand-title">Monitoring SE</span>
+        <span class="navbar-brand-sub">Sensus Ekonomi 2026</span>
+      </div>
+    </a>
+    <nav class="navbar-nav" id="navbar-nav">
+      <a href="dashboard.html" class="nav-link" id="nav-dashboard-link" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="laporan.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Input Laporan
+      </a>
+      <a href="riwayat.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Riwayat
+      </a>
+      <a href="anggota.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Anggota
+      </a>
+    </nav>
+    <div class="navbar-user">
+      <div class="user-info">
+        <div class="user-avatar" id="nav-avatar">?</div>
+        <div class="user-details">
+          <span class="user-name" id="nav-user-name">Loading...</span>
+          <span class="user-role" id="nav-user-role"></span>
+        </div>
+      </div>
+      <button class="btn-logout" id="btn-logout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Keluar
+      </button>
+      <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<main class="page-wrapper">
+  <div class="container-sm">
+
+    <div class="page-header animate-fade-in">
+      <h1 class="page-title">🕐 Riwayat Laporan Bidang Saya</h1>
+      <p class="page-subtitle">Semua laporan kegiatan yang pernah dibuat oleh bidang Anda, tersimpan di sini.</p>
+    </div>
+
+    <!-- Stats: hanya untuk ketua bidang -->
+    <div id="stats-row" class="grid grid-3 animate-fade-in anim-delay-1" style="margin-bottom:var(--space-xl);display:none">
+      <div class="stat-card primary">
+        <div class="stat-icon">📄</div>
+        <div class="stat-value" id="stat-total">0</div>
+        <div class="stat-label">Total Periode Dilaporkan</div>
+      </div>
+      <div class="stat-card success">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value" id="stat-submitted">0</div>
+        <div class="stat-label">Sudah Disubmit</div>
+      </div>
+      <div class="stat-card info">
+        <div class="stat-icon">📷</div>
+        <div class="stat-value" id="stat-foto">0</div>
+        <div class="stat-label">Total Foto Dokumentasi</div>
+      </div>
+    </div>
+
+    <div id="riwayat-container" class="animate-fade-in anim-delay-2">
+      <div class="card" style="padding:var(--space-xl);text-align:center">
+        <div style="color:var(--text-muted)">Memuat riwayat...</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ─── RIWAYAT DETAIL MODAL ─── -->
+<div class="rw-modal-backdrop" id="rw-modal-backdrop">
+  <div class="rw-modal">
+    <div class="rw-modal-head">
+      <div class="rw-modal-head-info">
+        <div class="rw-modal-periode" id="rwm-periode">—</div>
+        <div class="rw-modal-meta" id="rwm-meta"></div>
+      </div>
+      <button class="rw-modal-close" onclick="closeRiwayatModal()" title="Tutup">✕</button>
+    </div>
+    <div class="rw-modal-body">
+      <div class="rw-col">
+        <div class="rw-col-label kegiatan">📋 Kegiatan Dilakukan</div>
+        <div id="rwm-kegiatan"></div>
+      </div>
+      <div class="rw-col">
+        <div class="rw-col-label rencana">🎯 Rencana Kedepan</div>
+        <div id="rwm-rencana"></div>
+      </div>
+      <div class="rw-col">
+        <div class="rw-col-label foto">📷 Dokumentasi</div>
+        <div id="rwm-foto"></div>
+      </div>
+    </div>
+    <div class="rw-modal-foot">
+      <div class="rw-modal-foot-meta" id="rwm-foot-meta"></div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <a href="laporan.html" class="btn btn-primary btn-sm" id="rwm-foot-edit" style="display:none">✏️ Lanjut Edit</a>
+        <button class="btn btn-secondary btn-sm" onclick="closeRiwayatModal()">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  showLoading("Memuat riwayat...");
+  await fetchInitData();
+  hideLoading();
+  
+  const user = requireAuth();
+  if (!user) return;
+
+  if (DASHBOARD_ROLES.includes(user.role) || BIDANG_DASHBOARD_ROLES.includes(user.role)) {
+    const navDash = document.getElementById('nav-dashboard-link');
+    if (navDash) navDash.style.display = '';
+  }
+
+  // Determine which laporan to show
+  // ketua_bidang: laporan mereka sendiri (by userId)
+  // pimpinan/sekretaris: bisa lihat semua? — kita tampilkan semua WORD_BIDANGS sorted by periode
+  const isKetua = user.role === 'ketua_bidang';
+  const isLeader = DASHBOARD_ROLES.includes(user.role);
+
+  let allLaporan = [];
+  if (isKetua) {
+    allLaporan = getLaporanByUser(user.id);
+  } else if (isLeader) {
+    allLaporan = getAllLaporan();
+  } else {
+    // anggota — show their bidang's laporan from ketua
+    const ketuaBidang = BPS_USERS.find(u => u.role === 'ketua_bidang' && u.bidang === user.bidang);
+    allLaporan = ketuaBidang ? getLaporanByUser(ketuaBidang.id) : [];
+  }
+
+  allLaporan.sort((a, b) => b.periodeId.localeCompare(a.periodeId));
+
+  const periodes = getPastPeriodes(24);
+  const pMap = {};
+  periodes.forEach(p => pMap[p.id] = p);
+
+  // Stats for ketua
+  if (isKetua) {
+    document.getElementById('stats-row').style.display = '';
+    const submitted  = allLaporan.filter(l => l.status === 'submitted').length;
+    const totalFoto  = allLaporan.reduce((s, l) => s + (l.dokumentasi || []).length, 0);
+    setEl('stat-total',     el => el.textContent = allLaporan.length);
+    setEl('stat-submitted', el => el.textContent = submitted);
+    setEl('stat-foto',      el => el.textContent = totalFoto);
+  }
+
+  const container = document.getElementById('riwayat-container');
+  if (!allLaporan.length) {
+    container.innerHTML = `
+      <div class="card">
+        <div class="empty-state">
+          <span class="empty-icon">📋</span>
+          <div class="empty-title">Belum Ada Laporan</div>
+          <div class="empty-desc">
+            ${isKetua ? 'Belum ada laporan yang dibuat. Silakan isi laporan pertama Anda!' : 'Ketua bidang Anda belum membuat laporan.'}
+          </div>
+          ${isKetua ? '<a href="laporan.html" class="btn btn-primary">Buat Laporan Sekarang</a>' : ''}
+        </div>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = allLaporan.map(l => {
+    const p = pMap[l.periodeId] || { label: l.periodeId };
+    const fotoCount = (l.dokumentasi || []).length;
+    const isCurrent = l.periodeId === getCurrentPeriode().id;
+    return `
+      <div class="riwayat-card" onclick="openRiwayatModal('${l.id}')" style="cursor:pointer">
+        <div class="riwayat-card-header" style="pointer-events:none">
+          <div class="riwayat-card-info">
+            <div class="riwayat-card-periode">
+              ${p.label}
+              ${isCurrent ? '<span class="badge badge-primary" style="margin-left:8px;font-size:10px">Periode Saat Ini</span>' : ''}
+            </div>
+            <div class="riwayat-card-meta">
+              ${isLeader && !isKetua ? `<strong>${l.bidang.split(',')[0]}</strong> &nbsp;·&nbsp; ` : ''}
+              ${fotoCount} foto &nbsp;·&nbsp; Update: ${formatDate(l.updatedAt)}
+            </div>
+          </div>
+          ${statusBadge(l.status)}
+          <span class="riwayat-expand-icon" style="transform:rotate(-90deg)">▼</span>
+        </div>
+      </div>`;
+  }).join('');
+
+  // ── Store laporan map for modal ──
+  window._riwayatMap = {};
+  allLaporan.forEach(l => { window._riwayatMap[l.id] = l; });
+  window._pMap = pMap;
+  window._isKetua = isKetua;
+  window._isCurrent = (id) => id === getCurrentPeriode().id;
+});
+
+// ── Modal open/close ──
+window.openRiwayatModal = function(id) {
+  const l = window._riwayatMap[id];
+  if (!l) return;
+  const p = window._pMap[l.periodeId] || { label: l.periodeId };
+  const fotoCount = (l.dokumentasi || []).length;
+  const isCurrent = window._isCurrent(l.periodeId);
+
+  // Header
+  document.getElementById('rwm-periode').innerHTML =
+    p.label + (isCurrent ? ' <span class="badge badge-primary" style="font-size:11px;vertical-align:middle">Periode Saat Ini</span>' : '');
+  document.getElementById('rwm-meta').innerHTML =
+    statusBadge(l.status) +
+    `<span>${fotoCount} foto</span><span>·</span><span>Diperbarui ${formatDate(l.updatedAt)}</span>`;
+
+  // Kegiatan col
+  document.getElementById('rwm-kegiatan').innerHTML = l.kegiatan_dilakukan
+    ? `<div class="rw-col-text">${escHtml(l.kegiatan_dilakukan)}</div>`
+    : `<div class="rw-col-empty">Belum diisi.</div>`;
+
+  // Rencana col
+  document.getElementById('rwm-rencana').innerHTML = l.rencana_kedepan
+    ? `<div class="rw-col-text">${escHtml(l.rencana_kedepan)}</div>`
+    : `<div class="rw-col-empty">Belum diisi.</div>`;
+
+  // Foto col
+  if (fotoCount > 0) {
+    document.getElementById('rwm-foto').innerHTML =
+      `<div class="rw-photo-grid">
+        ${(l.dokumentasi || []).map(doc => `
+          <div class="rw-photo-item">
+            <img src="${doc.base64}" alt="Dokumentasi" loading="lazy">
+            <div class="rw-photo-caption">${doc.keterangan || 'Tanpa keterangan'}</div>
+          </div>`).join('')}
+      </div>`;
+  } else {
+    document.getElementById('rwm-foto').innerHTML =
+      `<div class="rw-col-empty">Tidak ada foto dokumentasi.</div>`;
+  }
+
+  // Footer
+  const footEdit = document.getElementById('rwm-foot-edit');
+  if (window._isKetua && isCurrent && l.status !== 'submitted') {
+    footEdit.style.display = '';
+  } else {
+    footEdit.style.display = 'none';
+  }
+
+  // Open
+  document.getElementById('rw-modal-backdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeRiwayatModal = function() {
+  document.getElementById('rw-modal-backdrop').classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+// Close on backdrop click
+document.getElementById('rw-modal-backdrop').addEventListener('click', function(e) {
+  if (e.target === this) closeRiwayatModal();
+});
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeRiwayatModal(); });
+
+function escHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Input Laporan — Monitoring Sensus Ekonomi BPS 2026</title>
+  <meta name="description" content="Form input laporan kegiatan 2 mingguan Sensus Ekonomi BPS 2026. Diisi oleh Ketua Bidang.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Layout utama: 2 kolom ── */
+    .laporan-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: var(--space-xl);
+      align-items: start;
+    }
+    .laporan-main  { min-width: 0; }
+    .laporan-aside { position: sticky; top: calc(var(--navbar-height) + 24px); }
+    @media (max-width: 1000px) {
+      .laporan-layout { grid-template-columns: 1fr; }
+      .laporan-aside  { position: static; }
+    }
+
+    /* ── Form section card ── */
+    .form-section {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFD 100%);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-glossy);
+      margin-bottom: var(--space-lg);
+      border: 1.5px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .form-section:focus-within { border-color: var(--primary); }
+    .form-section-title {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 17px; font-weight: 800; color: var(--text);
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-md);
+      border-bottom: 1.5px solid var(--border);
+    }
+    .section-num {
+      width: 28px; height: 28px; background: var(--primary); color: white;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; flex-shrink: 0;
+    }
+
+    /* ── Header 2-col: periode + pelapor bersebelahan ── */
+    .header-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+    @media (max-width: 860px) { .header-two-col { grid-template-columns: 1fr; } }
+
+    /* Card gradient sama seperti periode bar */
+    .grad-card {
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 55%, #2a6496 100%);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg) var(--space-xl);
+      color: white;
+      box-shadow: var(--shadow-md);
+      position: relative; overflow: hidden;
+    }
+    .grad-card::before {
+      content: ''; position: absolute;
+      right: -20px; top: -20px; width: 120px; height: 120px;
+      background: rgba(255,255,255,0.06); border-radius: 50%;
+    }
+    .grad-card-label {
+      font-size: 11px; font-weight: 600; opacity: 0.65;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .grad-card-value {
+      font-size: 22px; font-weight: 800; line-height: 1.3;
+    }
+    .grad-card-sub { font-size: 12px; opacity: 0.65; margin-top: 4px; }
+
+    /* Info pelapor fields in gradient card */
+    .pelapor-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+      position: relative; z-index: 1;
+    }
+    .pelapor-field {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+    }
+    .pelapor-field-label {
+      font-size: 10px; font-weight: 700; opacity: 0.65;
+      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px;
+    }
+    .pelapor-field-value {
+      font-size: 14px; font-weight: 700; line-height: 1.4;
+      word-break: break-word;
+    }
+    .pelapor-field.full { grid-column: 1 / -1; border-color: rgba(242,101,34,0.6); }
+    .pelapor-field.full .pelapor-field-value { color: #FDBA74; font-size: 15px; }
+
+    /* ── Big textarea: auto-expand ── */
+    .big-textarea {
+      width: 100%; min-height: 120px; resize: none; overflow: hidden;
+      font-family: var(--font); font-size: 15px; line-height: 1.8;
+      field-sizing: content; /* modern browsers */
+    }
+    .char-count { font-size: 12px; color: var(--text-light); text-align: right; margin-top: 6px; }
+
+    /* ── Foto grid ── */
+    .foto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-md); margin-top: var(--space-md); }
+    .foto-card {
+      border: 1.5px solid var(--border); border-radius: var(--radius-md);
+      overflow: hidden; position: relative;
+      animation: fadeIn 0.3s ease;
+    }
+    .foto-card-img { width: 100%; height: 150px; object-fit: cover; display: block; }
+    .foto-card-body { padding: var(--space-sm); }
+    .foto-card-keterangan {
+      width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 8px 10px; font-size: 13px; font-family: var(--font); resize: none;
+      min-height: 60px;
+    }
+    .foto-card-keterangan:focus { outline: none; border-color: var(--primary); }
+    .foto-remove-btn {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(0,0,0,0.65); color: white; border: none; cursor: pointer;
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; line-height: 1; transition: background 0.2s;
+    }
+    .foto-remove-btn:hover { background: var(--danger); }
+    .add-foto-area {
+      display: block; position: relative; /* FIX: label harus block agar full-width */
+      border: 2px dashed var(--border); border-radius: var(--radius-md);
+      padding: var(--space-xl); text-align: center; cursor: pointer; transition: all 0.2s;
+      background: var(--surface);
+    }
+    .add-foto-area:hover { border-color: var(--primary); background: var(--primary-light); }
+    .add-foto-area input[type=file] { display: none; }
+    .add-foto-icon { font-size: 32px; margin-bottom: 8px; display: block; }
+    .add-foto-text { font-size: 14px; font-weight: 700; color: var(--primary); }
+    .add-foto-hint { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+
+    /* Mode Banner: editing vs submitted */
+    .mode-banner {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 18px; border-radius: var(--radius-md);
+      font-size: 14px; font-weight: 600;
+      margin-bottom: var(--space-md);
+    }
+    .mode-banner.editing  { background: #EFF6FF; border: 1.5px solid #BFDBFE; color: #1E40AF; }
+    .mode-banner.submitted { background: #ECFDF5; border: 1.5px solid #A7F3D0; color: #065F46; }
+    .mode-banner-icon { font-size: 20px; flex-shrink: 0; }
+
+    /* ── Restricted state ── */
+    .restricted-state {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFD 100%);
+      border-radius: var(--radius-lg);
+      padding: 48px 40px; text-align: center;
+      box-shadow: var(--shadow-glossy); margin: var(--space-xl) auto;
+      max-width: 520px;
+      border: 1px solid var(--border);
+    }
+    .restricted-icon { font-size: 56px; margin-bottom: var(--space-md); }
+    .restricted-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .restricted-sub { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+
+    /* ── Mode switching via data-mode ── */
+    #form-body[data-mode="view"] .edit-only { display: none !important; }
+    #form-body[data-mode="view"] .view-only { display: block !important; }
+    #form-body[data-mode="edit"] .edit-only { display: block !important; }
+    #form-body[data-mode="edit"] .view-only { display: none !important; }
+
+    /* ── Content view box (read-only display) ── */
+    .content-view-box {
+      background: linear-gradient(135deg, #F8FAFF 0%, #EEF2FF 100%);
+      border-radius: var(--radius-md);
+      border: 1.5px solid #C7D2FE;
+      border-left: 4px solid var(--primary);
+      padding: var(--space-lg) var(--space-xl);
+      min-height: 90px;
+      font-size: 15px; line-height: 1.9;
+      color: var(--text);
+      white-space: pre-wrap; word-break: break-word;
+      transition: var(--transition);
+    }
+    .content-view-box.empty {
+      color: var(--text-muted); font-style: italic;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; min-height: 70px;
+      border-left-color: var(--border);
+      background: var(--surface);
+    }
+
+    /* Edit mode: form-section border pulse */
+    #form-body[data-mode="edit"] .form-section {
+      border-color: rgba(242,101,34,0.35);
+    }
+    #form-body[data-mode="view"] .form-section {
+      border-color: var(--border);
+      box-shadow: none;
+    }
+
+    /* ── Batal button style ── */
+    .btn-batal {
+      background: transparent; color: var(--danger);
+      border: 2px solid var(--danger);
+      padding: 14px 20px; font-size: 15px; font-weight: 600;
+      border-radius: var(--radius-sm); cursor: pointer;
+      font-family: var(--font); transition: var(--transition);
+      display: inline-flex; align-items: center; gap: 8px;
+      min-width: 170px; justify-content: center;
+    }
+    .btn-batal:hover { background: var(--danger-light); }
+    .riwayat-aside-header {
+      background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+      color: white; padding: 16px 20px;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .riwayat-aside-title { font-size: 15px; font-weight: 800; }
+    .riwayat-aside-body { background: white; border: 1px solid var(--border); border-top: none;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg); overflow: hidden; }
+    .riwayat-aside-item {
+      padding: 14px 18px; border-bottom: 1px solid var(--border);
+      cursor: pointer; transition: background 0.15s;
+    }
+    .riwayat-aside-item:last-child { border-bottom: none; }
+    .riwayat-aside-item:hover { background: var(--surface); }
+    .riwayat-aside-periode { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .riwayat-aside-snippet { font-size: 12px; color: var(--text-muted); line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .riwayat-aside-footer {
+      padding: 12px 18px; background: var(--surface-alt); text-align: center;
+      border: 1px solid var(--border); border-top: none;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="laporan.html" class="navbar-brand">
+      <div class="navbar-logo"><span>BPS</span><small>SE</small></div>
+      <div class="navbar-brand-text">
+        <span class="navbar-brand-title">Monitoring SE</span>
+        <span class="navbar-brand-sub">Sensus Ekonomi 2026</span>
+      </div>
+    </a>
+    <nav class="navbar-nav" id="navbar-nav">
+      <a href="dashboard.html" class="nav-link" id="nav-dashboard-link" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="laporan.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Input Laporan
+      </a>
+      <a href="riwayat.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Riwayat
+      </a>
+      <a href="anggota.html" class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Anggota
+      </a>
+    </nav>
+    <div class="navbar-user">
+      <div class="user-info">
+        <div class="user-avatar" id="nav-avatar">?</div>
+        <div class="user-details">
+          <span class="user-name" id="nav-user-name">Loading...</span>
+          <span class="user-role" id="nav-user-role"></span>
+        </div>
+      </div>
+      <button class="btn-logout" id="btn-logout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Keluar
+      </button>
+      <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── MAIN ─── -->
+<main class="page-wrapper">
+  <div class="container" style="max-width:1280px">
+
+    <!-- Page Header -->
+    <div class="page-header animate-fade-in">
+      <h1 class="page-title">📝 Input Laporan Kegiatan</h1>
+      <p class="page-subtitle">Silakan isi laporan kegiatan bidang Anda untuk periode ini. Bisa disimpan dulu, lalu disubmit bila sudah lengkap.</p>
+    </div>
+
+    <!-- STATE: Non-Ketua (anggota, pimpinan) -->
+    <div id="state-restricted" style="display:none" class="animate-fade-in">
+      <div class="restricted-state">
+        <div class="restricted-icon">🔒</div>
+        <div class="restricted-title">Akses Terbatas</div>
+        <p class="restricted-sub">
+          Pengisian laporan kegiatan dilakukan oleh <strong>Ketua Bidang</strong>.<br>
+          Laporan akan mewakili seluruh kegiatan bidang dalam periode ini.
+        </p>
+        <div style="margin-top:var(--space-xl);display:flex;gap:var(--space-md);justify-content:center;flex-wrap:wrap">
+          <a href="riwayat.html" class="btn btn-primary">Lihat Laporan Bidang Saya</a>
+          <a href="dashboard.html" class="btn btn-secondary" id="btn-ke-dashboard">Ke Dashboard</a>
+        </div>
+        <div class="alert alert-info" style="margin-top:var(--space-xl);text-align:left">
+          <span>💡</span>
+          <span>Jika ada kegiatan yang perlu dicatat, sampaikan kepada Ketua Bidang Anda untuk dimasukkan ke dalam laporan.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE: Ketua Bidang — Form -->
+    <div id="state-form" style="display:none">
+
+      <!-- Header 2-col: Periode + Info Pelapor bersebelahan -->
+      <div class="header-two-col animate-fade-in anim-delay-1">
+
+        <!-- Card kiri: Periode -->
+        <div class="grad-card">
+          <div class="grad-card-label">📅 Periode Pelaporan Saat Ini</div>
+          <div class="grad-card-value" id="periode-value">—</div>
+          <div class="grad-card-sub" id="periode-date"></div>
+          <div style="margin-top:16px;position:relative;z-index:1">
+            <div style="font-size:11px;opacity:0.65;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em">Status Laporan Anda</div>
+            <span id="periode-status" class="badge badge-danger">○ Belum Ada Laporan</span>
+          </div>
+        </div>
+
+        <!-- Card kanan: Info Pelapor -->
+        <div class="grad-card" style="background:linear-gradient(135deg,#1a3652 0%,#2563eb 60%,#1d4ed8 100%)">
+          <div style="display:flex;align-items:center;gap:8px;position:relative;z-index:1">
+            <span style="font-size:18px">👤</span>
+            <div style="font-size:13px;font-weight:700;opacity:0.9">Informasi Pelapor</div>
+            <div style="margin-left:auto;font-size:11px;opacity:0.55">Otomatis dari akun</div>
+          </div>
+          <div class="pelapor-fields">
+            <div class="pelapor-field">
+              <div class="pelapor-field-label">Nama Lengkap</div>
+              <div class="pelapor-field-value" id="field-nama">—</div>
+            </div>
+            <div class="pelapor-field">
+              <div class="pelapor-field-label">Jabatan</div>
+              <div class="pelapor-field-value" id="field-jabatan">—</div>
+            </div>
+            <div class="pelapor-field full">
+              <div class="pelapor-field-label">📋 Bidang / Unit Kerja</div>
+              <div class="pelapor-field-value" id="field-bidang">—</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 2-column layout: form (kiri) + riwayat sidebar (kanan) -->
+      <div class="laporan-layout">
+
+        <!-- KOLOM KIRI: Form isian -->
+        <div class="laporan-main" id="form-body" data-mode="edit">
+
+          <!-- SECTION 1: Kegiatan -->
+          <div class="form-section animate-fade-in anim-delay-2">
+            <div class="form-section-title">
+              <span class="section-num">1</span>
+              Kegiatan yang Telah Dilakukan
+              <span class="edit-only" style="font-size:12px;color:var(--danger);font-weight:600;margin-left:4px">Wajib</span>
+              <span class="view-only" style="font-size:12px;color:var(--primary);font-weight:600;margin-left:auto;opacity:0.7">Mode Tampil</span>
+            </div>
+            <!-- VIEW: Pretty read-only box -->
+            <div class="content-view-box view-only" id="view-kegiatan"></div>
+            <!-- EDIT: hint + textarea -->
+            <div class="alert alert-info edit-only" style="margin-bottom:var(--space-md)">
+              <span>💡</span>
+              <span>Tuliskan semua kegiatan yang sudah dilaksanakan. Gunakan nomor (1, 2, 3, ...) untuk setiap kegiatan berbeda.</span>
+            </div>
+            <textarea id="field-kegiatan-dilakukan" class="form-control big-textarea edit-only"
+              placeholder="Contoh:
+1. Koordinasi dengan petugas lapangan...
+2. Pelatihan penggunaan aplikasi CAPI kepada 15 petugas.
+3. Monitoring pendataan di Kelurahan Sukajaya."></textarea>
+            <div class="char-count edit-only"><span id="char-kegiatan">0</span> karakter</div>
+          </div>
+
+          <!-- SECTION 2: Rencana -->
+          <div class="form-section animate-fade-in anim-delay-2">
+            <div class="form-section-title">
+              <span class="section-num">2</span>
+              Rencana Kedepan dan Pengawalan
+              <span class="edit-only" style="font-size:12px;color:var(--danger);font-weight:600;margin-left:4px">Wajib</span>
+              <span class="view-only" style="font-size:12px;color:var(--primary);font-weight:600;margin-left:auto;opacity:0.7">Mode Tampil</span>
+            </div>
+            <!-- VIEW -->
+            <div class="content-view-box view-only" id="view-rencana"></div>
+            <!-- EDIT -->
+            <div class="alert alert-info edit-only" style="margin-bottom:var(--space-md)">
+              <span>🎯</span>
+              <span>Tuliskan rencana kegiatan ke depan dan bagaimana cara pengawalannya.</span>
+            </div>
+            <textarea id="field-rencana-kedepan" class="form-control big-textarea edit-only"
+              placeholder="Contoh:
+1. Melanjutkan pendataan di 3 kelurahan yang belum selesai.
+2. Monitoring progres harian petugas melalui dashboard CAPI.
+3. Koordinasi dengan Disdukcapil untuk validasi alamat usaha."></textarea>
+            <div class="char-count edit-only"><span id="char-rencana">0</span> karakter</div>
+          </div>
+
+          <!-- SECTION 3: Dokumentasi -->
+          <div class="form-section animate-fade-in anim-delay-3">
+            <div class="form-section-title">
+              <span class="section-num">3</span>
+              Bukti Dukung
+              <span style="font-size:12px;color:var(--text-muted);font-weight:500;margin-left:4px">Opsional — Foto + Keterangan</span>
+            </div>
+            <!-- Upload tombol: edit only -->
+            <div id="add-foto-wrapper" class="edit-only" style="margin-bottom:var(--space-md)">
+              <label class="add-foto-area" for="foto-upload-input">
+                <input type="file" id="foto-upload-input" accept="image/*" multiple>
+                <div class="add-foto-icon">📷</div>
+                <div class="add-foto-text">Klik untuk Upload Foto</div>
+                <div class="add-foto-hint">Format: JPG, PNG, HEIC &nbsp;|&nbsp; Maks. 3MB per foto</div>
+              </label>
+            </div>
+            <!-- Grid foto (mutual, remove btn dikontrol JS) -->
+            <div id="foto-grid" class="foto-grid"></div>
+            <!-- View mode: kosong -->
+            <div id="foto-empty-view" style="display:none">
+              <div class="content-view-box empty">
+                <span>📷</span><span>Tidak ada foto dokumentasi untuk periode ini</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ACTION AREA: full dirender JS -->
+          <div class="form-section animate-fade-in anim-delay-4" id="action-section"
+            style="border-color:#BAE6FD;padding: var(--space-lg) var(--space-xl)">
+            <div id="mode-banner"></div>
+            <div id="form-actions"></div>
+          </div>
+
+        </div><!-- end laporan-main -->
+
+        <!-- KOLOM KANAN: Riwayat sticky sidebar -->
+        <div class="laporan-aside animate-fade-in anim-delay-3">
+          <!-- Riwayat header banner -->
+          <div class="riwayat-aside-header">
+            <span class="riwayat-aside-title">🕐 Riwayat Laporan Bidang</span>
+            <a href="riwayat.html" style="color:rgba(255,255,255,0.8);font-size:12px;font-weight:600">Lihat Semua →</a>
+          </div>
+          <div class="riwayat-aside-body" id="riwayat-singkat">
+            <div style="padding:20px;text-align:center;color:var(--text-muted);font-size:14px">Memuat riwayat...</div>
+          </div>
+          <div class="riwayat-aside-footer">
+            <a href="riwayat.html" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center">📋 Lihat Semua Riwayat</a>
+          </div>
+        </div>
+
+      </div><!-- end laporan-layout -->
+
+    </div><!-- end state-form -->
+  </div>
+</main>
+
+<div id="toast-container"></div>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/laporan.js"></script>
+</body>
+</html>

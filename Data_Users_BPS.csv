@@ -1,0 +1,17 @@
+id,username,password,nama,jabatan,bidang,role,avatar
+1,kepala,bps2026,Dr. Ahmad Yani S.T. M.Si.,Penanggung Jawab (Kepala BPS),Pimpinan,penanggung_jawab,AY
+2,ketua_se,bps2026,Budi Santoso S.Si. M.Sc.,Ketua Pelaksana SE,Pimpinan,ketua_pelaksana,BS
+3,wakil,bps2026,Siti Rahayu S.E. M.M.,Wakil Ketua,Pimpinan,wakil_ketua,SR
+4,sekretaris,bps2026,Dewi Lestari S.Sos.,Sekretaris,Sekretariat,sekretaris,DL
+5,kteknis,bps2026,Rudi Hermawan S.T.,Ketua Bidang Teknis & Manajemen Lapangan,Teknis Pendataan dan Manajemen Lapangan,ketua_bidang,RH
+8,kpengolahan,bps2026,Maya Kusuma S.Kom.,Ketua Bidang Pengolahan & TIK,Pengolahan Teknologi Informasi dan Diseminasi,ketua_bidang,MK
+11,kadmin,bps2026,Hendra Gunawan S.E.,Ketua Bidang Administrasi & Humas,Administrasi Hubungan Masyarakat dan Manajemen Risiko,ketua_bidang,HG
+14,kanalisis,bps2026,Dr. Sri Wahyuni M.Si.,Ketua Analisis Kualitas Data,Analisis dan Kualitas Data,ketua_bidang,SW
+6,angteknis1,bps2026,Andi Prasetyo S.Si.,Anggota Bidang Teknis,Teknis Pendataan dan Manajemen Lapangan,anggota,AP
+7,angteknis2,bps2026,Lili Kurniawan A.Md.,Anggota Bidang Teknis,Teknis Pendataan dan Manajemen Lapangan,anggota,LK
+9,angpengolahan1,bps2026,Deni Setiawan S.Kom.,Anggota Bidang Pengolahan,Pengolahan Teknologi Informasi dan Diseminasi,anggota,DS
+10,angpengolahan2,bps2026,Rina Wulandari S.T.,Anggota Bidang Pengolahan,Pengolahan Teknologi Informasi dan Diseminasi,anggota,RW
+12,angadmin1,bps2026,Fitri Handayani S.Sos.,Anggota Bidang Administrasi,Administrasi Hubungan Masyarakat dan Manajemen Risiko,anggota,FH
+13,angadmin2,bps2026,Bambang Suharto A.Md.,Anggota Bidang Administrasi,Administrasi Hubungan Masyarakat dan Manajemen Risiko,anggota,BA
+15,anganalisis1,bps2026,Yusuf Rahman S.Si.,Anggota Analisis Kualitas Data,Analisis dan Kualitas Data,anggota,YR
+16,anganalisis2,bps2026,Putri Anggraini S.Stat.,Anggota Analisis Kualitas Data,Analisis dan Kualitas Data,anggota,PA

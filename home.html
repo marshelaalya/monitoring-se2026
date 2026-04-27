@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beranda — Monitoring Sensus Ekonomi BPS 2026</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .home-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(160deg, #0f2744 0%, #1a3a6b 50%, #0e1f3d 100%);
+    }
+
+    /* Subtle background pattern */
+    .home-page::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(242,101,34,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(37,99,235,0.12) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .home-inner {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 40px 24px; position: relative; z-index: 1;
+    }
+
+    /* Header */
+    .home-header { text-align: center; margin-bottom: 52px; }
+    .home-logo {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--primary), #FF8C5A);
+      border-radius: 18px; display: inline-flex;
+      flex-direction: column; align-items: center; justify-content: center;
+      margin-bottom: 20px; box-shadow: 0 8px 24px rgba(242,101,34,0.35);
+    }
+    .home-logo span { font-size: 16px; font-weight: 900; color: white; line-height: 1; }
+    .home-logo small { font-size: 7px; font-weight: 700; color: rgba(255,255,255,0.8); letter-spacing: 1px; }
+    .home-greeting {
+      font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.5);
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;
+    }
+    .home-user-name {
+      font-size: 28px; font-weight: 800; color: white; margin-bottom: 4px;
+    }
+    .home-user-role {
+      font-size: 14px; color: rgba(255,255,255,0.55);
+    }
+
+    /* Cards */
+    .home-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%; max-width: 620px;
+    }
+    @media (max-width: 560px) { .home-cards { grid-template-columns: 1fr; } }
+
+    .home-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F7F8FB 100%);
+      border: 1.5px solid rgba(255,255,255,0.5);
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+      position: relative; overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06),
+                  inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+    /* Glossy shine band at top */
+    .home-card::after {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 50%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, transparent 100%);
+      border-radius: 20px 20px 0 0;
+      pointer-events: none;
+    }
+    .home-card::before {
+      content: ''; position: absolute;
+      inset: 0; border-radius: 20px; opacity: 0;
+      transition: opacity 0.25s; z-index: 1;
+    }
+    .home-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.16), 0 4px 12px rgba(0,0,0,0.06),
+                  inset 0 1px 0 rgba(255,255,255,0.95);
+    }
+
+    /* Card A: Laporan — oranye */
+    .home-card-laporan::before { background: linear-gradient(135deg, rgba(242,101,34,0.06), transparent); }
+    .home-card-laporan:hover::before { opacity: 1; }
+    .home-card-laporan .card-icon-wrap {
+      background: linear-gradient(135deg, var(--primary), #FF8C5A);
+    }
+
+    /* Card B: Dashboard — biru */
+    .home-card-dashboard::before { background: linear-gradient(135deg, rgba(37,99,235,0.08), transparent); }
+    .home-card-dashboard:hover::before { opacity: 1; }
+    .home-card-dashboard .card-icon-wrap {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+    }
+
+    .card-icon-wrap {
+      width: 60px; height: 60px; border-radius: 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; font-size: 26px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .home-card:hover .card-icon-wrap { transform: scale(1.12); }
+
+    .card-title {
+      font-size: 18px; font-weight: 800; color: #1A202C;
+      margin-bottom: 8px; line-height: 1.3;
+    }
+    .card-desc {
+      font-size: 13px; color: #718096;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .home-footer {
+      text-align: center; padding: 24px;
+      font-size: 12px; color: rgba(255,255,255,0.25);
+      position: relative; z-index: 1;
+    }
+    .btn-logout-home {
+      margin-top: 36px; background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6); border-radius: 8px;
+      padding: 8px 20px; font-size: 13px; cursor: pointer;
+      font-family: var(--font); transition: all 0.2s;
+    }
+    .btn-logout-home:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.85);
+    }
+  </style>
+</head>
+<body>
+<div class="home-page">
+  <div class="home-inner">
+
+    <!-- Header -->
+    <div class="home-header animate-fade-in">
+      <div class="home-logo">
+        <span>BPS</span>
+        <small>SE</small>
+      </div>
+      <div class="home-greeting">Selamat datang</div>
+      <div class="home-user-name" id="home-user-name">—</div>
+      <div class="home-user-role" id="home-user-role">—</div>
+    </div>
+
+    <!-- Cards -->
+    <div class="home-cards animate-fade-in anim-delay-1">
+
+      <!-- Card: Input Laporan -->
+      <a href="laporan.html" class="home-card home-card-laporan" id="card-laporan">
+        <div class="card-icon-wrap">📝</div>
+        <div class="card-title">Input Laporan</div>
+        <div class="card-desc">Isi dan submit laporan kegiatan bidang untuk periode ini</div>
+      </a>
+
+      <!-- Card: Dashboard -->
+      <a href="dashboard.html" class="home-card home-card-dashboard" id="card-dashboard">
+        <div class="card-icon-wrap">📊</div>
+        <div class="card-title">Dashboard</div>
+        <div class="card-desc">Pantau progres pelaporan seluruh bidang secara real-time</div>
+      </a>
+
+    </div>
+
+    <button class="btn-logout-home" id="btn-home-logout">↩ Keluar</button>
+
+  </div>
+
+  <div class="home-footer">© 2026 Badan Pusat Statistik — Rahasia</div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    showLoading("Memuat data...");
+    await fetchInitData();
+    hideLoading();
+    
+    const user = requireAuth();
+    if (!user) return;
+
+    // Isi info user
+    document.getElementById('home-user-name').textContent = user.nama;
+    document.getElementById('home-user-role').textContent = user.jabatan;
+
+    // Sembunyikan card Dashboard jika tidak punya akses
+    const hasDashboard = DASHBOARD_ROLES.includes(user.role) || BIDANG_DASHBOARD_ROLES.includes(user.role);
+    const cardDash = document.getElementById('card-dashboard');
+    if (!hasDashboard) {
+      cardDash.style.display = 'none';
+      // Pusatkan card laporan jika hanya satu
+      document.querySelector('.home-cards').style.gridTemplateColumns = '1fr';
+      document.querySelector('.home-cards').style.maxWidth = '300px';
+    }
+
+    // Sembunyikan card Laporan jika bukan ketua bidang dan bukan pimpinan
+    const canLaporan = ['ketua_bidang','penanggung_jawab','ketua_pelaksana','wakil_ketua','sekretaris'].includes(user.role);
+    const cardLap = document.getElementById('card-laporan');
+    if (!canLaporan) {
+      cardLap.style.display = 'none';
+    }
+
+    // Logout
+    document.getElementById('btn-home-logout').addEventListener('click', logout);
+  });
+</script>
+</body>
+</html>
